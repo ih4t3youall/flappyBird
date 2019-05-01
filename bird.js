@@ -4,6 +4,11 @@ var jump = false;
 var times = 0;
 var jumpHeight = 20;
 var game = true;
+//var pipe =new Pipe(canvasX-100,canvasX);
+var ctx = canvas.getContext("2d");
+var pipe =new Pipe(canvasX-100,canvasX);
+var pipe2 =new Pipe(canvasX-100,canvasX);
+var cont = 1000;
 
 function drawBall() {
 	ctx.beginPath();
@@ -30,20 +35,26 @@ function doJump(){
 }
 
 function draw() {
-	console.log("jump: "+jump);
 	if(jump){
 		if(game)
 			doJump();
 	}else{
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 	}
-	console.log("y: "+y);
 	if(game)
 		drawBall();
 	marginCollition();
 //	x += dx;
 	y += dy;
-	drawRectangle();
+	//pipe.drawPipe();
+	pipe.drawPipe();
+	if (cont < 0){
+		
+		pipe2.drawPipe();
+	}
+	cont--;
+	console.log(cont);
+	
 	
 }
 
@@ -70,7 +81,7 @@ function checkCollitionY(){
 	}
 }
 
-setInterval(draw, 10);
+setInterval(draw, 1);
 canvas.addEventListener('click',()=>{
 	jump = true;
 	y=y-2;
