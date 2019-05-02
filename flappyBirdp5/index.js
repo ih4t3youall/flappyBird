@@ -13,3 +13,7 @@ function draw(){
 	pipe.drawPipe();
 	bird.drawBird();
 }
+
+function mouseClicked(){
+	bird.jump();
+}
