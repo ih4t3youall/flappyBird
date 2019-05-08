@@ -1,1 +1,0 @@
-en la clase bird hay un ctx.clearRect que me limpia todo el canvas, hay que encontrar la forma de que la bolita no quede toda marcada pero que no me borre el rectangulo

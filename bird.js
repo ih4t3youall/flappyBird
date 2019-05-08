@@ -1,88 +1,77 @@
-var dx = 2;
-var dy = 2;
-var jump = false;
-var times = 0;
-var jumpHeight = 20;
-var game = true;
-//var pipe =new Pipe(canvasX-100,canvasX);
-var ctx = canvas.getContext("2d");
-var pipe =new Pipe(canvasX-100,canvasX);
-var pipe2 =new Pipe(canvasX-100,canvasX);
-var cont = 1000;
+class Bird{
 
-function drawBall() {
-	ctx.beginPath();
-	ctx.arc(x, y, 10, 0, Math.PI*2);
-	ctx.fillStyle = "#0095DD";
-	ctx.fill();
-	ctx.closePath();
-}
-
-function doJump(){
-
-	times++;
-	if (times < jumpHeight){
-		dy =-6;
+	constructor(canvasx,canvasy,pipe){
+		this.pipe = pipe;
+		this.x = canvasx/2;
+		this.y= canvasy/2;
+		this.diameter= 20;
+		this.speed =4
+		this.speedy=this.speed;
+		//jump stuff
+		this.jumpPower=15;
+		this.jumpCounter=0;
+		this.jumpSpeed=-10;
+		this.isJumping=false;
+		this.gameOver=false;
 	}
-	if(times > jumpHeight ){
-		dy =2;
-		jump = false;
-		times = 0;
-	}
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	if (game)
-		drawBall();
-}
-
-function draw() {
-	if(jump){
-		if(game)
-			doJump();
-	}else{
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
-	}
-	if(game)
-		drawBall();
-	marginCollition();
-//	x += dx;
-	y += dy;
-	//pipe.drawPipe();
-	pipe.drawPipe();
-	if (cont < 0){
-		
-		pipe2.drawPipe();
-	}
-	cont--;
-	console.log(cont);
 	
-	
-}
-
-function marginCollition(){
-	checkCollitionX();
-	checkCollitionY();
-}
-
-function checkCollitionX(){
-	if(x < 4){
-		dx = 2;
+	getX(){
+		return this.x;
 	}
-	if( x > 500){
-		dx = -2;
+	getY(){
+		return this.y;
 	}
-}
 
-function checkCollitionY(){
-	if (y > 500){
-		dy = 0;
-	}
-	if (y < 4){
-		dy = 2;
-	}
-}
+	drawBird(){
+		ellipse(this.x,this.y,this.diameter,this.diameter);
+		this.y =this.y +this.speedy;
+		this.floorColition();
+		this.roofColition();
+		if (this.isJumping)
+			this.doJump();
 
-setInterval(draw, 1);
-canvas.addEventListener('click',()=>{
-	jump = true;
-	y=y-2;
-});
+	}
+
+	finishGame(){
+		return this.gameOver;
+	}
+
+	killBird(){
+		this.gameOver=true;
+	}
+
+	floorColition(){
+		if(this.y > 500){
+			this.speedy =0;
+		}
+	}
+	roofColition(){
+		if(this.y < 0){
+			this.y =this.speed;
+		}
+	}
+
+	jump(){
+		this.isJumping =true;
+		this.speedy =this.jumpSpeed;
+		this.doJump();
+	}
+
+
+	getIsJumping(){
+		return this.isJumping;
+	}
+
+	doJump(){
+		if(this.isJumping){
+				this.jumpCounter++; 
+			if(this.jumpPower == this.jumpCounter){
+				this.isJumping=false;
+				this.speedy=this.speed;
+				this.jumpCounter=0; 
+				
+			}	
+		}
+	}
+
+}

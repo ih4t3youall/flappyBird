@@ -1,4 +1,4 @@
-class Pipe{
+class PipeDown{
 
 	constructor(canvasx,canvasy,bird){
 		this.x = canvasx;
